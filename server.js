@@ -97,7 +97,17 @@ app.post('/image', (req, res) => {
     }
 })
 
+bcrypt.hash("bacon", null, null, function(err, hash) {
+    // Store hash in your password DB.
+});
 
+// Load hash from your password DB.
+bcrypt.compare("bacon", hash, function(err, res) {
+    // res == true
+});
+bcrypt.compare("veggies", hash, function(err, res) {
+    // res = false
+});
 
 //setting of localhost:3000
 app.listen(3000, () => {
