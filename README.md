@@ -1,1 +1,1 @@
-Uses bcrypt-nodejs implementation on hash to have a strong password security. Installed CORS that provides a Connect/Express middleware. Imported (KNEX.js)[https://knexjs.org/], a SQL query builder, to connect the database to the app.
+Uses bcrypt-nodejs implementation on hash to have a strong password security. Installed CORS that provides a Connect/Express middleware. Imported [KNEX.js](https://knexjs.org/), a SQL query builder, to connect the database to the app.

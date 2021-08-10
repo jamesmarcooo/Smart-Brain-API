@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors');
 const knex = require('knex');
 //database connect
 const db = knex({
@@ -19,6 +20,9 @@ db.select("*").from('users').then(data => {
 
 //setting up express.js
 const app = express();
+
+//cors
+app.use(cors());
 
 //setting up body parser for json
 app.use(bodyParser.json());
@@ -66,12 +70,18 @@ app.post('/register', (req, res) => {
     //     entries: 0,
     //     joined: new Date()
     // })
-    db('users').insert({
-        email: email,
-        name: name,
-        joined: new Date()
-    }).then(console.log)
-    res.json(database.users[database.users.length-1]); //response, if not included postman will just load
+    db('users')
+        .returning('*')
+        .insert({
+            email: email,
+            name: name,
+            joined: new Date()
+        })
+        .then(user => {
+        res.json(user[0]);
+        // res.json(database.users[database.users.length-1]); //response, if not included postman will just load
+    })
+        .catch(err => res.status(400).json('unable to register'))
 })
 
 //Signing in @ localhost:3000/signin
