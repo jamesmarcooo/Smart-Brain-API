@@ -2,16 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const knex = require('knex');
-
-knex({
+//database connect
+const db = knex({
     client: 'pg',
     connection: {
       host : '127.0.0.1',
       user : 'postgres',
-      password : '',
+      password : 'marco',
       database : 'smartbrain'
     }
   });
+
+db.select("*").from('users').then(data => {
+    console.log(data);
+});
 
 //setting up express.js
 const app = express();
@@ -55,13 +59,18 @@ app.get('/', (req, res) => {
 //Register @ localhost:3000/register
 app.post('/register', (req, res) => {
     const { email, name, password } = req.body //destructuring
-    database.users.push({ //template
-        id: '125',
-        name: name,
+    // database.users.push({ //template
+    //     id: '125',
+    //     name: name,
+    //     email: email,
+    //     entries: 0,
+    //     joined: new Date()
+    // })
+    db('users').insert({
         email: email,
-        entries: 0,
+        name: name,
         joined: new Date()
-    })
+    }).then(console.log)
     res.json(database.users[database.users.length-1]); //response, if not included postman will just load
 })
 
@@ -107,17 +116,17 @@ app.put('/image', (req, res) => {
     }
 })
 
-bcrypt.hash("bacon", null, null, function(err, hash) {
-    // Store hash in your password DB.
-});
+// bcrypt.hash("bacon", null, null, function(err, hash) {
+//     // Store hash in your password DB.
+// });
 
-// Load hash from your password DB.
-bcrypt.compare("bacon", hash, function(err, res) {
-    // res == true
-});
-bcrypt.compare("veggies", hash, function(err, res) {
-    // res = false
-});
+// // Load hash from your password DB.
+// bcrypt.compare("bacon", hash, function(err, res) {
+//     // res == true
+// });
+// bcrypt.compare("veggies", hash, function(err, res) {
+//     // res = false
+// });
 
 //setting of localhost:3000
 app.listen(3000, () => {
